@@ -341,7 +341,7 @@
                 for (let i = 0; i < teamsPerPlayer; i++) {
                     html += `
                         <div class="team-select">
-                            <select id="player${index}_team${i}">
+                            <select id="player${index}_team${i}" onchange="updateAvailableTeams()">
                                 <option value="">Select Team ${i + 1}</option>
                                 ${nflTeams.map(team => `<option value="${team}">${team}</option>`).join('')}
                             </select>
@@ -352,6 +352,64 @@
                 playerDiv.innerHTML = html;
                 container.appendChild(playerDiv);
             });
+            
+            updateAvailableTeams();
+        }
+
+        function updateAvailableTeams() {
+            // Get all currently selected teams
+            const selectedTeams = new Set();
+            const teamsPerPlayer = Math.floor(32 / players.length);
+            
+            players.forEach((player, playerIndex) => {
+                for (let i = 0; i < teamsPerPlayer; i++) {
+                    const select = document.getElementById(`player${playerIndex}_team${i}`);
+                    if (select && select.value) {
+                        selectedTeams.add(select.value);
+                    }
+                }
+            });
+            
+            // Update all dropdowns to disable/remove selected teams
+            players.forEach((player, playerIndex) => {
+                for (let i = 0; i < teamsPerPlayer; i++) {
+                    const select = document.getElementById(`player${playerIndex}_team${i}`);
+                    if (select) {
+                        const currentValue = select.value;
+                        
+                        // Clear the dropdown and rebuild it
+                        select.innerHTML = '<option value="">Select Team ' + (i + 1) + '</option>';
+                        
+                        // Add available teams
+                        nflTeams.forEach(team => {
+                            if (!selectedTeams.has(team) || team === currentValue) {
+                                const option = document.createElement('option');
+                                option.value = team;
+                                option.textContent = team;
+                                if (team === currentValue) {
+                                    option.selected = true;
+                                }
+                                select.appendChild(option);
+                            }
+                        });
+                    }
+                }
+            });
+            
+            // Update available teams counter
+            const remainingTeams = 32 - selectedTeams.size;
+            const existingCounter = document.getElementById('remainingTeamsCounter');
+            if (existingCounter) {
+                existingCounter.remove();
+            }
+            
+            if (remainingTeams > 0) {
+                const counter = document.createElement('div');
+                counter.id = 'remainingTeamsCounter';
+                counter.style.cssText = 'text-align: center; margin: 10px 0; padding: 10px; background: #e3f2fd; border-radius: 5px; font-weight: bold; color: #1976d2;';
+                counter.textContent = `${remainingTeams} teams remaining to assign`;
+                document.getElementById('teamAssignmentContainer').insertBefore(counter, document.getElementById('teamAssignmentContainer').firstChild);
+            }
         }
 
         function generateLeaderboard() {
