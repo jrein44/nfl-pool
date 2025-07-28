@@ -500,20 +500,36 @@
             const sortedByWins = Object.entries(poolData).sort((a, b) => b[1].wins - a[1].wins);
             const sortedByLosses = Object.entries(poolData).sort((a, b) => b[1].losses - a[1].losses);
             
-            const bestWinner = sortedByWins[0];
-            const worstWinner = sortedByLosses[0];
+            // Find all players tied for best wins
+            const topWins = sortedByWins[0][1].wins;
+            const bestWinners = sortedByWins.filter(([player, data]) => data.wins === topWins);
             
-            // Update stats
+            // Find all players tied for most losses
+            const topLosses = sortedByLosses[0][1].losses;
+            const worstWinners = sortedByLosses.filter(([player, data]) => data.losses === topLosses);
+            
+            // Create lists of tied players
+            const bestWinnerNames = bestWinners.map(([name]) => name);
+            const worstWinnerNames = worstWinners.map(([name]) => name);
+            
+            // Update stats - handle ties appropriately
+            const bestDisplay = bestWinners.length > 1 ? 
+                `${bestWinners.length}-way tie` : bestWinners[0][0];
+            const worstDisplay = worstWinners.length > 1 ? 
+                `${worstWinners.length}-way tie` : worstWinners[0][0];
+            
             statsContainer.innerHTML = `
                 <div class="stat-card">
                     <h3>Leading for BEST</h3>
-                    <div class="value">${bestWinner[0]}</div>
-                    <p>${bestWinner[1].wins} wins</p>
+                    <div class="value" style="font-size: ${bestWinners.length > 1 ? '1.5em' : '2em'}">${bestDisplay}</div>
+                    <p>${topWins} wins</p>
+                    ${bestWinners.length > 1 ? `<small>${bestWinnerNames.join(', ')}</small>` : ''}
                 </div>
                 <div class="stat-card">
                     <h3>Leading for WORST</h3>
-                    <div class="value">${worstWinner[0]}</div>
-                    <p>${worstWinner[1].losses} losses</p>
+                    <div class="value" style="font-size: ${worstWinners.length > 1 ? '1.5em' : '2em'}">${worstDisplay}</div>
+                    <p>${topLosses} losses</p>
+                    ${worstWinners.length > 1 ? `<small>${worstWinnerNames.join(', ')}</small>` : ''}
                 </div>
                 <div class="stat-card">
                     <h3>Current Week</h3>
@@ -529,11 +545,15 @@
                 const row = tbody.insertRow();
                 let className = '';
                 
-                if (player === bestWinner[0] && player === worstWinner[0]) {
-                    className = 'best-winner'; // If same person leads both, show as best winner
-                } else if (player === bestWinner[0]) {
+                // Check if player is tied for best wins AND worst losses
+                const isBestWinner = bestWinnerNames.includes(player);
+                const isWorstWinner = worstWinnerNames.includes(player);
+                
+                if (isBestWinner && isWorstWinner) {
+                    className = 'best-winner'; // If tied for both, show as best winner
+                } else if (isBestWinner) {
                     className = 'best-winner';
-                } else if (player === worstWinner[0]) {
+                } else if (isWorstWinner) {
                     className = 'worst-winner';
                 }
                 
