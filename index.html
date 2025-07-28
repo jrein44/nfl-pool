@@ -688,7 +688,22 @@
 
         // Initialize with sample data for demonstration
         window.onload = function() {
-            document.getElementById('playerNames').value = 'Player 1\nPlayer 2\nPlayer 3\nPlayer 4\nPlayer 5\nPlayer 6\nPlayer 7\nPlayer 8';
+            // Check if poolData has been populated with real team assignments
+            if (Object.keys(poolData).length > 0) {
+                // Skip setup - go straight to leaderboard
+                document.getElementById('setup').style.display = 'none';
+                document.getElementById('teamAssignment').style.display = 'none';
+                document.getElementById('leaderboard').style.display = 'block';
+                
+                // Extract player names from poolData
+                players = Object.keys(poolData);
+                
+                // Update header with pool data
+                updateLeaderboardDisplay();
+            } else {
+                // Show setup for new pools
+                document.getElementById('playerNames').value = 'Player 1\nPlayer 2\nPlayer 3\nPlayer 4\nPlayer 5\nPlayer 6\nPlayer 7\nPlayer 8';
+            }
         };
     </script>
 </body>
