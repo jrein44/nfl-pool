@@ -260,14 +260,6 @@
             </div>
 
             <div id="leaderboard" class="leaderboard">
-                <div class="week-controls">
-                    <label>Update Scores for Week: 
-                        <input type="number" id="currentWeek" value="1" min="1" max="18">
-                    </label>
-                    <button onclick="updateScores()">Update Week Scores</button>
-                    <button onclick="resetScores()">Reset All Scores</button>
-                </div>
-
                 <div class="stats" id="statsContainer"></div>
 
                 <table class="leaderboard-table" id="leaderboardTable">
@@ -298,6 +290,44 @@
             'New York Jets', 'Philadelphia Eagles', 'Pittsburgh Steelers', 'San Francisco 49ers',
             'Seattle Seahawks', 'Tampa Bay Buccaneers', 'Tennessee Titans', 'Washington Commanders'
         ];
+
+        // NFL Team Records - UPDATE THESE EACH WEEK
+        const teamRecords = {
+            'Arizona Cardinals': { wins: 0, losses: 0 },
+            'Atlanta Falcons': { wins: 0, losses: 0 },
+            'Baltimore Ravens': { wins: 0, losses: 0 },
+            'Buffalo Bills': { wins: 0, losses: 0 },
+            'Carolina Panthers': { wins: 0, losses: 0 },
+            'Chicago Bears': { wins: 0, losses: 0 },
+            'Cincinnati Bengals': { wins: 0, losses: 0 },
+            'Cleveland Browns': { wins: 0, losses: 0 },
+            'Dallas Cowboys': { wins: 0, losses: 0 },
+            'Denver Broncos': { wins: 0, losses: 0 },
+            'Detroit Lions': { wins: 0, losses: 0 },
+            'Green Bay Packers': { wins: 0, losses: 0 },
+            'Houston Texans': { wins: 0, losses: 0 },
+            'Indianapolis Colts': { wins: 0, losses: 0 },
+            'Jacksonville Jaguars': { wins: 0, losses: 0 },
+            'Kansas City Chiefs': { wins: 0, losses: 0 },
+            'Las Vegas Raiders': { wins: 0, losses: 0 },
+            'Los Angeles Chargers': { wins: 0, losses: 0 },
+            'Los Angeles Rams': { wins: 0, losses: 0 },
+            'Miami Dolphins': { wins: 0, losses: 0 },
+            'Minnesota Vikings': { wins: 0, losses: 0 },
+            'New England Patriots': { wins: 0, losses: 0 },
+            'New Orleans Saints': { wins: 0, losses: 0 },
+            'New York Giants': { wins: 0, losses: 0 },
+            'New York Jets': { wins: 0, losses: 0 },
+            'Philadelphia Eagles': { wins: 0, losses: 0 },
+            'Pittsburgh Steelers': { wins: 0, losses: 0 },
+            'San Francisco 49ers': { wins: 0, losses: 0 },
+            'Seattle Seahawks': { wins: 0, losses: 0 },
+            'Tampa Bay Buccaneers': { wins: 0, losses: 0 },
+            'Tennessee Titans': { wins: 0, losses: 0 },
+            'Washington Commanders': { wins: 0, losses: 0 }
+        };
+
+        const currentWeek = 1; // UPDATE THIS EACH WEEK
 
         let players = [];
         let poolData = {};
@@ -421,9 +451,7 @@
             
             players.forEach((player, playerIndex) => {
                 poolData[player] = {
-                    teams: [],
-                    wins: 0,
-                    losses: 0
+                    teams: []
                 };
                 
                 for (let i = 0; i < teamsPerPlayer; i++) {
@@ -452,47 +480,45 @@
                 return;
             }
 
+            // Calculate wins and losses for each player based on their teams
+            calculatePlayerTotals();
+
             document.getElementById('teamAssignment').style.display = 'none';
             document.getElementById('leaderboard').style.display = 'block';
             
             updateLeaderboardDisplay();
         }
 
-        function updateScores() {
-            // In a real implementation, you'd fetch scores from an API
-            // For now, we'll use random scores for demonstration
-            const currentWeek = parseInt(document.getElementById('currentWeek').value);
-            
+        function calculatePlayerTotals() {
             Object.keys(poolData).forEach(player => {
                 let totalWins = 0;
                 let totalLosses = 0;
                 
                 poolData[player].teams.forEach(team => {
-                    // Simulate random wins/losses for each team based on current week
-                    const gamesPlayed = currentWeek;
-                    const wins = Math.floor(Math.random() * (gamesPlayed + 1));
-                    const losses = gamesPlayed - wins;
-                    totalWins += wins;
-                    totalLosses += losses;
+                    if (teamRecords[team]) {
+                        totalWins += teamRecords[team].wins;
+                        totalLosses += teamRecords[team].losses;
+                    }
                 });
                 
                 poolData[player].wins = totalWins;
                 poolData[player].losses = totalLosses;
             });
-            
-            updateLeaderboardDisplay();
+        }
+
+        function updateScores() {
+            // This function is removed in the public version
+            // Scores are updated manually by editing the poolData object
         }
 
         function resetScores() {
-            Object.keys(poolData).forEach(player => {
-                poolData[player].wins = 0;
-                poolData[player].losses = 0;
-            });
-            document.getElementById('currentWeek').value = 1;
-            updateLeaderboardDisplay();
+            // This function is removed in the public version  
         }
 
         function updateLeaderboardDisplay() {
+            // Recalculate player totals based on current team records
+            calculatePlayerTotals();
+            
             const tbody = document.getElementById('leaderboardBody');
             const statsContainer = document.getElementById('statsContainer');
             
@@ -533,7 +559,7 @@
                 </div>
                 <div class="stat-card">
                     <h3>Current Week</h3>
-                    <div class="value">${document.getElementById('currentWeek').value}</div>
+                    <div class="value">${currentWeek}</div>
                     <p>of 18</p>
                 </div>
             `;
