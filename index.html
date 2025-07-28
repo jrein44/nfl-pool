@@ -257,6 +257,19 @@
                 <p style="margin-bottom: 20px;">Select which NFL teams each player drafted:</p>
                 <div id="teamAssignmentContainer"></div>
                 <button onclick="generateLeaderboard()">Generate Leaderboard</button>
+                <button onclick="exportTeamAssignments()" style="margin-left: 10px; background: #ff9800;">Export for GitHub</button>
+            </div>
+
+            <div id="exportModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 10px; max-width: 80%; max-height: 80%; overflow: auto;">
+                    <h3>Copy this code to your GitHub file:</h3>
+                    <p style="margin: 10px 0; color: #666; font-size: 14px;">Replace the empty poolData = {} in your GitHub HTML file with this code:</p>
+                    <textarea id="exportCode" readonly style="width: 100%; height: 300px; font-family: monospace; font-size: 12px; border: 2px solid #ddd; border-radius: 5px; padding: 10px;"></textarea>
+                    <div style="margin-top: 15px; text-align: center;">
+                        <button onclick="copyToClipboard()" style="margin-right: 10px;">Copy to Clipboard</button>
+                        <button onclick="closeExportModal()">Close</button>
+                    </div>
+                </div>
             </div>
 
             <div id="leaderboard" class="leaderboard">
@@ -331,6 +344,14 @@
 
         let players = [];
         let poolData = {};
+
+        // AFTER YOUR DRAFT: Replace the empty poolData above with your actual team assignments
+        // Example format:
+        // let poolData = {
+        //     "Player 1": { teams: ["Kansas City Chiefs", "Buffalo Bills", "Philadelphia Eagles", "San Francisco 49ers"] },
+        //     "Player 2": { teams: ["Dallas Cowboys", "Miami Dolphins", "Green Bay Packers", "Baltimore Ravens"] },
+        //     "Player 3": { teams: ["Cincinnati Bengals", "Jacksonville Jaguars", "Carolina Panthers", "Arizona Cardinals"] }
+        // };
 
         function setupPool() {
             const poolName = document.getElementById('poolName').value || 'NFL Pool';
@@ -487,6 +508,67 @@
             document.getElementById('leaderboard').style.display = 'block';
             
             updateLeaderboardDisplay();
+        }
+
+        function exportTeamAssignments() {
+            // Collect current team assignments
+            const teamsPerPlayer = Math.floor(32 / players.length);
+            const tempPoolData = {};
+            
+            let hasAllTeams = true;
+            players.forEach((player, playerIndex) => {
+                tempPoolData[player] = { teams: [] };
+                
+                for (let i = 0; i < teamsPerPlayer; i++) {
+                    const teamSelect = document.getElementById(`player${playerIndex}_team${i}`);
+                    const team = teamSelect.value;
+                    if (team) {
+                        tempPoolData[player].teams.push(team);
+                    } else {
+                        hasAllTeams = false;
+                    }
+                }
+            });
+
+            if (!hasAllTeams) {
+                alert('Please assign all teams before exporting!');
+                return;
+            }
+
+            // Check for duplicates
+            const allSelectedTeams = [];
+            Object.values(tempPoolData).forEach(data => {
+                allSelectedTeams.push(...data.teams);
+            });
+            
+            const duplicates = allSelectedTeams.filter((team, index) => allSelectedTeams.indexOf(team) !== index);
+            if (duplicates.length > 0) {
+                alert(`Fix duplicate teams before exporting: ${duplicates.join(', ')}`);
+                return;
+            }
+
+            // Generate the code
+            let code = 'let poolData = {\n';
+            Object.entries(tempPoolData).forEach(([player, data], index) => {
+                const isLast = index === Object.keys(tempPoolData).length - 1;
+                code += `    "${player}": { teams: [${data.teams.map(team => `"${team}"`).join(', ')}] }${isLast ? '' : ','}\n`;
+            });
+            code += '};';
+
+            // Show in modal
+            document.getElementById('exportCode').value = code;
+            document.getElementById('exportModal').style.display = 'block';
+        }
+
+        function copyToClipboard() {
+            const textarea = document.getElementById('exportCode');
+            textarea.select();
+            document.execCommand('copy');
+            alert('Code copied to clipboard!');
+        }
+
+        function closeExportModal() {
+            document.getElementById('exportModal').style.display = 'none';
         }
 
         function calculatePlayerTotals() {
