@@ -378,17 +378,17 @@
                 }
             });
             
-            // Update all dropdowns to disable/remove selected teams
+            // Update all dropdowns to remove selected teams
             players.forEach((player, playerIndex) => {
                 for (let i = 0; i < teamsPerPlayer; i++) {
                     const select = document.getElementById(`player${playerIndex}_team${i}`);
                     if (select) {
                         const currentValue = select.value;
                         
-                        // Clear the dropdown and rebuild it
+                        // Clear and rebuild the dropdown
                         select.innerHTML = '<option value="">Select Team ' + (i + 1) + '</option>';
                         
-                        // Add available teams
+                        // Add only available teams (not selected elsewhere) plus current selection
                         nflTeams.forEach(team => {
                             if (!selectedTeams.has(team) || team === currentValue) {
                                 const option = document.createElement('option');
@@ -404,19 +404,23 @@
                 }
             });
             
-            // Update available teams counter
+            // Update counter
             const remainingTeams = 32 - selectedTeams.size;
-            const existingCounter = document.getElementById('remainingTeamsCounter');
-            if (existingCounter) {
-                existingCounter.remove();
+            let counter = document.getElementById('remainingTeamsCounter');
+            
+            if (counter) {
+                counter.remove();
             }
             
-            if (remainingTeams > 0) {
-                const counter = document.createElement('div');
+            if (remainingTeams > 0 && remainingTeams < 32) {
+                counter = document.createElement('div');
                 counter.id = 'remainingTeamsCounter';
                 counter.style.cssText = 'text-align: center; margin: 10px 0; padding: 10px; background: #e3f2fd; border-radius: 5px; font-weight: bold; color: #1976d2;';
                 counter.textContent = `${remainingTeams} teams remaining to assign`;
-                document.getElementById('teamAssignmentContainer').insertBefore(counter, document.getElementById('teamAssignmentContainer').firstChild);
+                const container = document.getElementById('teamAssignmentContainer');
+                if (container && container.firstChild) {
+                    container.insertBefore(counter, container.firstChild);
+                }
             }
         }
 
