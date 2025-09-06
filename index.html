@@ -562,10 +562,10 @@
             });
         }
 
-        // Initialize with sample data for demonstration
+        // Initialize
         window.onload = function() {
-            // Check if poolData has been populated with real team assignments
-            if (Object.keys(poolData).length > 0) {
+            // Check if poolData has team assignments
+            if (poolData && Object.keys(poolData).length > 0) {
                 // Skip setup - go straight to leaderboard
                 document.getElementById('setup').style.display = 'none';
                 document.getElementById('teamAssignment').style.display = 'none';
@@ -574,7 +574,7 @@
                 // Extract player names from poolData
                 players = Object.keys(poolData);
                 
-                // Update header with pool data
+                // Update leaderboard
                 updateLeaderboardDisplay();
             } else {
                 // Show setup for new pools
