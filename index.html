@@ -49,87 +49,6 @@
             padding: 30px;
         }
 
-        .setup-section {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-
-        .input-group {
-            margin-bottom: 15px;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        .input-group input:focus, .input-group select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .team-assignment {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .player-teams {
-            background: #fff;
-            border: 2px solid #eee;
-            border-radius: 10px;
-            padding: 15px;
-        }
-
-        .player-teams h3 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-        }
-
-        .team-select {
-            margin-bottom: 5px;
-        }
-
-        .team-select select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-        }
-
-        .leaderboard {
-            display: none;
-        }
-
         .leaderboard-table {
             width: 100%;
             border-collapse: collapse;
@@ -182,16 +101,6 @@
             color: #666;
         }
 
-        .week-controls {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .week-controls input {
-            width: 80px;
-            margin: 0 10px;
-        }
-
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -227,83 +136,25 @@
         </div>
 
         <div class="content">
-            <div id="setup" class="setup-section">
-                <h2>Pool Setup</h2>
-                
-                <div class="input-group">
-                    <label for="poolName">Pool Name:</label>
-                    <input type="text" id="poolName" placeholder="Enter pool name (e.g., 'Johnson Family Pool 2025')">
-                </div>
+            <div class="stats" id="statsContainer"></div>
 
-                <div class="input-group">
-                    <label for="numPlayers">Number of Players:</label>
-                    <select id="numPlayers">
-                        <option value="4">4 Players (8 teams each)</option>
-                        <option value="8" selected>8 Players (4 teams each)</option>
-                        <option value="16">16 Players (2 teams each)</option>
-                    </select>
-                </div>
-
-                <div class="input-group">
-                    <label>Player Names (one per line):</label>
-                    <textarea id="playerNames" rows="8" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 5px;" placeholder="Enter player names, one per line:&#10;Player 1&#10;Player 2&#10;Player 3&#10;etc..."></textarea>
-                </div>
-
-                <button onclick="setupPool()">Setup Pool</button>
-            </div>
-
-            <div id="teamAssignment" style="display: none;">
-                <h2>Assign Teams to Players</h2>
-                <p style="margin-bottom: 20px;">Select which NFL teams each player drafted:</p>
-                <div id="teamAssignmentContainer"></div>
-                <button onclick="generateLeaderboard()">Generate Leaderboard</button>
-                <button onclick="exportTeamAssignments()" style="margin-left: 10px; background: #ff9800;">Export for GitHub</button>
-            </div>
-
-            <div id="exportModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 10px; max-width: 80%; max-height: 80%; overflow: auto;">
-                    <h3>Copy this code to your GitHub file:</h3>
-                    <p style="margin: 10px 0; color: #666; font-size: 14px;">Replace the empty poolData = {} in your GitHub HTML file with this code:</p>
-                    <textarea id="exportCode" readonly style="width: 100%; height: 300px; font-family: monospace; font-size: 12px; border: 2px solid #ddd; border-radius: 5px; padding: 10px;"></textarea>
-                    <div style="margin-top: 15px; text-align: center;">
-                        <button onclick="copyToClipboard()" style="margin-right: 10px;">Copy to Clipboard</button>
-                        <button onclick="closeExportModal()">Close</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="leaderboard" class="leaderboard">
-                <div class="stats" id="statsContainer"></div>
-
-                <table class="leaderboard-table" id="leaderboardTable">
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Player</th>
-                            <th>Total Wins</th>
-                            <th>Total Losses</th>
-                            <th>Teams</th>
-                        </tr>
-                    </thead>
-                    <tbody id="leaderboardBody">
-                    </tbody>
-                </table>
-            </div>
+            <table class="leaderboard-table" id="leaderboardTable">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Total Wins</th>
+                        <th>Total Losses</th>
+                        <th>Teams</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardBody">
+                </tbody>
+            </table>
         </div>
     </div>
 
     <script>
-        const nflTeams = [
-            'Arizona Cardinals', 'Atlanta Falcons', 'Baltimore Ravens', 'Buffalo Bills',
-            'Carolina Panthers', 'Chicago Bears', 'Cincinnati Bengals', 'Cleveland Browns',
-            'Dallas Cowboys', 'Denver Broncos', 'Detroit Lions', 'Green Bay Packers',
-            'Houston Texans', 'Indianapolis Colts', 'Jacksonville Jaguars', 'Kansas City Chiefs',
-            'Las Vegas Raiders', 'Los Angeles Chargers', 'Los Angeles Rams', 'Miami Dolphins',
-            'Minnesota Vikings', 'New England Patriots', 'New Orleans Saints', 'New York Giants',
-            'New York Jets', 'Philadelphia Eagles', 'Pittsburgh Steelers', 'San Francisco 49ers',
-            'Seattle Seahawks', 'Tampa Bay Buccaneers', 'Tennessee Titans', 'Washington Commanders'
-        ];
-
         // NFL Team Records - UPDATE THESE EACH WEEK
         const teamRecords = {
             'Arizona Cardinals': { wins: 0, losses: 0 },
@@ -342,243 +193,17 @@
 
         const currentWeek = 1; // UPDATE THIS EACH WEEK
 
-        let players = [];
+        // Pool data with team assignments
         let poolData = {
-    "David": { teams: ["Cleveland Browns",  "New York Giants", "New England Patriots", "Los Angeles Chargers"] },
-    "Ryan": { teams: ["Buffalo Bills", "Tampa Bay Buccaneers", "Jacksonville Jaguars", "Green Bay Packers"] },
-    "Murtaza": { teams: ["Philadelphia Eagles", "Detroit Lions", "Cincinnati Bengals", "Denver Broncos"] },
-    "Jorge": { teams: ["New Orleans Saints", "Pittsburgh Steelers", "Atlanta Falcons", "Minnesota Vikings"] },
-    "LT": { teams: ["Tennessee Titans", "Miami Dolphins", "Chicago Bears", "Los Angeles Rams" ] },
-    "Matt": { teams: ["New York Jets", "Las Vegas Raiders", "Dallas Cowboys", "Houston Texans"] },
-    "Jess": { teams: ["Indianapolis Colts", "Carolina Panthers", "Seattle Seahawks", "Arizona Cardinals"] },
-    "Daniella": { teams: ["Baltimore Ravens", "Kansas City Chiefs", "Washington Commanders", "San Francisco 49ers"] }
-};
-
-        // AFTER YOUR DRAFT: Replace the empty poolData above with your actual team assignments
-        // Example format:
-        // let poolData = {
-        //     "Player 1": { teams: ["Kansas City Chiefs", "Buffalo Bills", "Philadelphia Eagles", "San Francisco 49ers"] },
-        //     "Player 2": { teams: ["Dallas Cowboys", "Miami Dolphins", "Green Bay Packers", "Baltimore Ravens"] },
-        //     "Player 3": { teams: ["Cincinnati Bengals", "Jacksonville Jaguars", "Carolina Panthers", "Arizona Cardinals"] }
-        // };
-
-        function setupPool() {
-            const poolName = document.getElementById('poolName').value || 'NFL Pool';
-            const numPlayers = parseInt(document.getElementById('numPlayers').value);
-            const playerNamesText = document.getElementById('playerNames').value.trim();
-            
-            if (!playerNamesText) {
-                alert('Please enter player names');
-                return;
-            }
-
-            players = playerNamesText.split('\n').map(name => name.trim()).filter(name => name);
-            
-            if (players.length !== numPlayers) {
-                alert(`Please enter exactly ${numPlayers} player names`);
-                return;
-            }
-
-            document.querySelector('.header h1').textContent = `🏈 ${poolName}`;
-            
-            // Generate team assignment interface
-            generateTeamAssignment();
-            
-            document.getElementById('setup').style.display = 'none';
-            document.getElementById('teamAssignment').style.display = 'block';
-        }
-
-        function generateTeamAssignment() {
-            const container = document.getElementById('teamAssignmentContainer');
-            const teamsPerPlayer = Math.floor(32 / players.length);
-            
-            container.innerHTML = '';
-            
-            players.forEach((player, index) => {
-                const playerDiv = document.createElement('div');
-                playerDiv.className = 'player-teams';
-                
-                let html = `<h3>${player} (${teamsPerPlayer} teams)</h3>`;
-                
-                for (let i = 0; i < teamsPerPlayer; i++) {
-                    html += `
-                        <div class="team-select">
-                            <select id="player${index}_team${i}" onchange="updateAvailableTeams()">
-                                <option value="">Select Team ${i + 1}</option>
-                                ${nflTeams.map(team => `<option value="${team}">${team}</option>`).join('')}
-                            </select>
-                        </div>
-                    `;
-                }
-                
-                playerDiv.innerHTML = html;
-                container.appendChild(playerDiv);
-            });
-            
-            updateAvailableTeams();
-        }
-
-        function updateAvailableTeams() {
-            // Get all currently selected teams
-            const selectedTeams = new Set();
-            const teamsPerPlayer = Math.floor(32 / players.length);
-            
-            players.forEach((player, playerIndex) => {
-                for (let i = 0; i < teamsPerPlayer; i++) {
-                    const select = document.getElementById(`player${playerIndex}_team${i}`);
-                    if (select && select.value) {
-                        selectedTeams.add(select.value);
-                    }
-                }
-            });
-            
-            // Update all dropdowns to disable/remove selected teams
-            players.forEach((player, playerIndex) => {
-                for (let i = 0; i < teamsPerPlayer; i++) {
-                    const select = document.getElementById(`player${playerIndex}_team${i}`);
-                    if (select) {
-                        const currentValue = select.value;
-                        
-                        // Clear the dropdown and rebuild it
-                        select.innerHTML = '<option value="">Select Team ' + (i + 1) + '</option>';
-                        
-                        // Add available teams
-                        nflTeams.forEach(team => {
-                            if (!selectedTeams.has(team) || team === currentValue) {
-                                const option = document.createElement('option');
-                                option.value = team;
-                                option.textContent = team;
-                                if (team === currentValue) {
-                                    option.selected = true;
-                                }
-                                select.appendChild(option);
-                            }
-                        });
-                    }
-                }
-            });
-            
-            // Update available teams counter
-            const remainingTeams = 32 - selectedTeams.size;
-            const existingCounter = document.getElementById('remainingTeamsCounter');
-            if (existingCounter) {
-                existingCounter.remove();
-            }
-            
-            if (remainingTeams > 0) {
-                const counter = document.createElement('div');
-                counter.id = 'remainingTeamsCounter';
-                counter.style.cssText = 'text-align: center; margin: 10px 0; padding: 10px; background: #e3f2fd; border-radius: 5px; font-weight: bold; color: #1976d2;';
-                counter.textContent = `${remainingTeams} teams remaining to assign`;
-                document.getElementById('teamAssignmentContainer').insertBefore(counter, document.getElementById('teamAssignmentContainer').firstChild);
-            }
-        }
-
-        function generateLeaderboard() {
-            // Collect team assignments
-            poolData = {};
-            const teamsPerPlayer = Math.floor(32 / players.length);
-            
-            players.forEach((player, playerIndex) => {
-                poolData[player] = {
-                    teams: []
-                };
-                
-                for (let i = 0; i < teamsPerPlayer; i++) {
-                    const teamSelect = document.getElementById(`player${playerIndex}_team${i}`);
-                    const team = teamSelect.value;
-                    if (team) {
-                        poolData[player].teams.push(team);
-                    }
-                }
-                
-                if (poolData[player].teams.length !== teamsPerPlayer) {
-                    alert(`Please select all teams for ${player}`);
-                    return;
-                }
-            });
-
-            // Check for duplicate teams
-            const allSelectedTeams = [];
-            Object.values(poolData).forEach(data => {
-                allSelectedTeams.push(...data.teams);
-            });
-            
-            const duplicates = allSelectedTeams.filter((team, index) => allSelectedTeams.indexOf(team) !== index);
-            if (duplicates.length > 0) {
-                alert(`Duplicate teams selected: ${duplicates.join(', ')}`);
-                return;
-            }
-
-            // Calculate wins and losses for each player based on their teams
-            calculatePlayerTotals();
-
-            document.getElementById('teamAssignment').style.display = 'none';
-            document.getElementById('leaderboard').style.display = 'block';
-            
-            updateLeaderboardDisplay();
-        }
-
-        function exportTeamAssignments() {
-            // Collect current team assignments
-            const teamsPerPlayer = Math.floor(32 / players.length);
-            const tempPoolData = {};
-            
-            let hasAllTeams = true;
-            players.forEach((player, playerIndex) => {
-                tempPoolData[player] = { teams: [] };
-                
-                for (let i = 0; i < teamsPerPlayer; i++) {
-                    const teamSelect = document.getElementById(`player${playerIndex}_team${i}`);
-                    const team = teamSelect.value;
-                    if (team) {
-                        tempPoolData[player].teams.push(team);
-                    } else {
-                        hasAllTeams = false;
-                    }
-                }
-            });
-
-            if (!hasAllTeams) {
-                alert('Please assign all teams before exporting!');
-                return;
-            }
-
-            // Check for duplicates
-            const allSelectedTeams = [];
-            Object.values(tempPoolData).forEach(data => {
-                allSelectedTeams.push(...data.teams);
-            });
-            
-            const duplicates = allSelectedTeams.filter((team, index) => allSelectedTeams.indexOf(team) !== index);
-            if (duplicates.length > 0) {
-                alert(`Fix duplicate teams before exporting: ${duplicates.join(', ')}`);
-                return;
-            }
-
-            // Generate the code
-            let code = 'let poolData = {\n';
-            Object.entries(tempPoolData).forEach(([player, data], index) => {
-                const isLast = index === Object.keys(tempPoolData).length - 1;
-                code += `    "${player}": { teams: [${data.teams.map(team => `"${team}"`).join(', ')}] }${isLast ? '' : ','}\n`;
-            });
-            code += '};';
-
-            // Show in modal
-            document.getElementById('exportCode').value = code;
-            document.getElementById('exportModal').style.display = 'block';
-        }
-
-        function copyToClipboard() {
-            const textarea = document.getElementById('exportCode');
-            textarea.select();
-            document.execCommand('copy');
-            alert('Code copied to clipboard!');
-        }
-
-        function closeExportModal() {
-            document.getElementById('exportModal').style.display = 'none';
-        }
+            "David": { teams: ["Cleveland Browns", "New York Giants", "New England Patriots", "Los Angeles Chargers"] },
+            "Ryan": { teams: ["Buffalo Bills", "Tampa Bay Buccaneers", "Jacksonville Jaguars", "Green Bay Packers"] },
+            "Murtaza": { teams: ["Philadelphia Eagles", "Detroit Lions", "Cincinnati Bengals", "Denver Broncos"] },
+            "Jorge": { teams: ["New Orleans Saints", "Pittsburgh Steelers", "Atlanta Falcons", "Minnesota Vikings"] },
+            "LT": { teams: ["Tennessee Titans", "Miami Dolphins", "Chicago Bears", "Los Angeles Rams"] },
+            "Matt": { teams: ["New York Jets", "Las Vegas Raiders", "Dallas Cowboys", "Houston Texans"] },
+            "Jess": { teams: ["Indianapolis Colts", "Carolina Panthers", "Seattle Seahawks", "Arizona Cardinals"] },
+            "Daniella": { teams: ["Baltimore Ravens", "Kansas City Chiefs", "Washington Commanders", "San Francisco 49ers"] }
+        };
 
         function calculatePlayerTotals() {
             Object.keys(poolData).forEach(player => {
@@ -597,15 +222,6 @@
             });
         }
 
-        function updateScores() {
-            // This function is removed in the public version
-            // Scores are updated manually by editing the poolData object
-        }
-
-        function resetScores() {
-            // This function is removed in the public version  
-        }
-
         function updateLeaderboardDisplay() {
             // Recalculate player totals based on current team records
             calculatePlayerTotals();
@@ -613,16 +229,21 @@
             const tbody = document.getElementById('leaderboardBody');
             const statsContainer = document.getElementById('statsContainer');
             
-            // Sort players by wins (descending) for ranking
-            const sortedByWins = Object.entries(poolData).sort((a, b) => b[1].wins - a[1].wins);
+            // Sort players by wins (descending), then by losses (ascending) for ranking
+            const sortedByWins = Object.entries(poolData).sort((a, b) => {
+                if (b[1].wins !== a[1].wins) {
+                    return b[1].wins - a[1].wins; // Higher wins first
+                }
+                return a[1].losses - b[1].losses; // If tied on wins, fewer losses first
+            });
             const sortedByLosses = Object.entries(poolData).sort((a, b) => b[1].losses - a[1].losses);
             
             // Find all players tied for best wins
-            const topWins = sortedByWins[0][1].wins;
+            const topWins = sortedByWins.length > 0 ? sortedByWins[0][1].wins : 0;
             const bestWinners = sortedByWins.filter(([player, data]) => data.wins === topWins);
             
             // Find all players tied for most losses
-            const topLosses = sortedByLosses[0][1].losses;
+            const topLosses = sortedByLosses.length > 0 ? sortedByLosses[0][1].losses : 0;
             const worstWinners = sortedByLosses.filter(([player, data]) => data.losses === topLosses);
             
             // Create lists of tied players
@@ -631,9 +252,9 @@
             
             // Update stats - handle ties appropriately
             const bestDisplay = bestWinners.length > 1 ? 
-                `${bestWinners.length}-way tie` : bestWinners[0][0];
+                `${bestWinners.length}-way tie` : (bestWinners[0] ? bestWinners[0][0] : 'No data');
             const worstDisplay = worstWinners.length > 1 ? 
-                `${worstWinners.length}-way tie` : worstWinners[0][0];
+                `${worstWinners.length}-way tie` : (worstWinners[0] ? worstWinners[0][0] : 'No data');
             
             statsContainer.innerHTML = `
                 <div class="stat-card">
@@ -679,31 +300,16 @@
                 row.innerHTML = `
                     <td class="position">${index + 1}</td>
                     <td><strong>${player}</strong></td>
-                    <td>${data.wins}</td>
-                    <td>${data.losses}</td>
-                    <td class="teams-list">${data.teams.join(', ')}</td>
+                    <td>${data.wins || 0}</td>
+                    <td>${data.losses || 0}</td>
+                    <td class="teams-list">${data.teams ? data.teams.join(', ') : 'No teams'}</td>
                 `;
             });
         }
 
-        // Initialize with sample data for demonstration
+        // Initialize immediately
         window.onload = function() {
-            // Check if poolData has been populated with real team assignments
-            if (Object.keys(poolData).length > 0) {
-                // Skip setup - go straight to leaderboard
-                document.getElementById('setup').style.display = 'none';
-                document.getElementById('teamAssignment').style.display = 'none';
-                document.getElementById('leaderboard').style.display = 'block';
-                
-                // Extract player names from poolData
-                players = Object.keys(poolData);
-                
-                // Update header with pool data
-                updateLeaderboardDisplay();
-            } else {
-                // Show setup for new pools
-                document.getElementById('playerNames').value = 'Player 1\nPlayer 2\nPlayer 3\nPlayer 4\nPlayer 5\nPlayer 6\nPlayer 7\nPlayer 8';
-            }
+            updateLeaderboardDisplay();
         };
     </script>
 </body>
